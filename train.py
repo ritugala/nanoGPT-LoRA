@@ -27,7 +27,7 @@ import torch
 from torch.nn.parallel import DistributedDataParallel as DDP
 from torch.distributed import init_process_group, destroy_process_group
 
-from model import GPTConfig, GPT, mark_lora_trainable
+from model import GPTConfig, GPT, get_lora_model
 
 # -----------------------------------------------------------------------------
 # default config values designed to train a gpt2 (124M) on OpenWebText
@@ -188,7 +188,7 @@ elif init_from == 'resume':
     if lora_rank > 0:
         # Only make LoRA weights tunable
         print("Marking model as LoRA fine-tunable...")
-        mark_lora_trainable(model)
+        model = get_lora_model(model)
         print("Done.")
 
 elif init_from.startswith('gpt2'):
@@ -208,7 +208,7 @@ elif init_from.startswith('gpt2'):
     if lora_rank > 0:
         # Only make LoRA weights tunable
         print("Marking model as LoRA fine-tunable...")
-        mark_lora_trainable(model)
+        model = get_lora_model(model)
         print("Done.")
 
 # crop down the model block size if desired, using model surgery

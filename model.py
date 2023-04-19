@@ -98,12 +98,13 @@ class LoRALinear(nn.Linear):
             self.has_weights_merged = True
         return self
 
-def mark_lora_trainable(m: nn.Module):
-    for name, param in m.named_parameters():
+def get_lora_model(model: nn.Module) -> nn.Module:
+    for name, param in model.named_parameters():
         if "lora" in name:
             param.requires_grad = True
         else:
             param.requires_grad = False
+    return model
 
 # @torch.jit.script # good to enable when not using torch.compile, disable when using (our default)
 def new_gelu(x):
