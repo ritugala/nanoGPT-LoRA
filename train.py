@@ -163,7 +163,7 @@ elif init_from == 'resume':
     # force these config attributes to be equal otherwise we can't even resume training
     # the rest of the attributes (e.g. dropout) can stay as desired from command line
     for k in ['n_layer', 'n_head', 'n_embd', 'block_size', 'bias', 'vocab_size', 'lora_rank', 'lora_alpha']:
-        model_args[k] = checkpoint_model_args[k]
+        model_args[k] = checkpoint_model_args.get(k, 0)
     # create the model
 
     # LoRA fine-tuning?    
